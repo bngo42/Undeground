@@ -40,7 +40,7 @@ public class Movement : MonoBehaviour {
 
 		}
 
-		if (canMove) {
+		if (canMove && GameManager.gm.canMove) {
 			Vector3 vel = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
 			rb.velocity = Vector3.ClampMagnitude((vel * (playerSpeed * 4f)), 4f);
 		}
