@@ -5,6 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
 
 	public float 			playerSpeed = 1f;
+	public float			maxVelocity = 5f;
 	public ParticleSystem 	particles;
 	private bool			isUnderground = false;
 	private bool			canMove = true;
@@ -42,8 +43,11 @@ public class Movement : MonoBehaviour {
 		}
 
 		if (canMove && GameManager.gm.canMove) {
-			Vector3 vel = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-			rb.velocity = Vector3.ClampMagnitude((vel * (playerSpeed * 4f)), 4f);
+			Vector3 inputs = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+			Vector3 dir = Camera.main.transform.TransformDirection(inputs);
+			dir.y = 0f;
+			Vector3 vel = Vector3.ClampMagnitude((dir.normalized * (playerSpeed * maxVelocity)), maxVelocity);
+			rb.velocity = vel;
 		}
 	}
 
