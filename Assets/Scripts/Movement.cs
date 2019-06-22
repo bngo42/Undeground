@@ -22,10 +22,13 @@ public class Movement : MonoBehaviour {
 	void FixedUpdate () {
 		RaycastHit hit;
 		if (Physics.Raycast(transform.position, -transform.up, out hit, 10f)) {
-			currentMat = hit.transform.GetComponent<Renderer>().material;
+			Renderer objRend = hit.transform.GetComponent<Renderer>();
+			if (objRend) {
 
-			ParticleSystem.MainModule main = particles.main;
-			main.startColor = currentMat.color;
+				currentMat = objRend.material;
+				ParticleSystem.MainModule main = particles.main;
+				main.startColor = currentMat.color;
+			}
 		}
 		if (corrToggleMode == null && Input.GetButtonDown("Fire3")){
 			if (!hit.transform.gameObject.layer.Equals(LayerMask.NameToLayer("Floor"))){
