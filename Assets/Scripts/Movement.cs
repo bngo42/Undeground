@@ -34,6 +34,7 @@ public class Movement : MonoBehaviour {
 			if (!hit.transform.gameObject.layer.Equals(LayerMask.NameToLayer("Floor"))){
 				isUnderground = !isUnderground;
 				Debug.Log("Switch mode !");
+				rb.velocity = Vector3.zero;
 				corrToggleMode = toggleMode();
 				StartCoroutine(corrToggleMode);
 			}
