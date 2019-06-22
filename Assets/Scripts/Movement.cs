@@ -48,6 +48,10 @@ public class Movement : MonoBehaviour {
 			dir.y = 0f;
 			Vector3 vel = Vector3.ClampMagnitude((dir.normalized * (playerSpeed * maxVelocity)), maxVelocity);
 			rb.velocity = vel;
+			
+			if (Input.GetButton("Horizontal") || Input.GetButton("Vertical")) {
+			 	transform.rotation = Quaternion.LookRotation(new Vector3(vel.x, 0f, vel.z));
+			}
 		}
 	}
 

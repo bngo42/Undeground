@@ -7,11 +7,15 @@ public class GameManager : MonoBehaviour {
 	public static GameManager gm;
 	
 	//Global Parameters
-	[HideInInspector]
-	public bool		canMove = true;
+	
+	[HideInInspector]public bool	canMove = true;
+	[HideInInspector]public bool	gameStarted = false;	
 
-	[HideInInspector]
-	public int currentScore = 0;
+	[HideInInspector]public int 	currentScore = 0;
+	[HideInInspector]public float 	hunger = 20f;
+	[HideInInspector]public float 	reduceSpeed = 1f;
+
+	[HideInInspector]public float	timer;
 
 	void Awake () {
 		if (gm == null){
@@ -20,11 +24,61 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start() {
+		UIManager.uim.fadeInBackdrop();
+		UIManager.uim.switchScreen("StartScreen");
+	}
+
+	public void StartGameCoroutine() {
+		StartCoroutine(StartGame());
+	}
+
+	public void StopGameCoroutine() {
+		StartCoroutine(StopGame());
+	}
+	
+	public void StartCountdownCoroutine() {
+		StartCoroutine(startCountdown(3));
+	}
+
+	public IEnumerator startCountdown(int begin) {
+		int count = (begin + 1);
+		for (;;) {
+			count--;
+			UIManager.uim.broadcastMessage((count > 0) ? count.ToString() : "START");
+			yield return new WaitForSeconds(1f);
+			if (count <= 0) {
+				UIManager.uim.broadcastMessage("");
+				UIManager.uim.switchScreen("GameScreen");
+				break ;
+			}
+		}
+	}
+
+	public IEnumerator StartGame() {
+		GameManager.gm.canMove = false;
 		StartCoroutine(RevealCam.rc.revealLevel());
+		yield return new WaitForSeconds(RevealCam.rc.animationSpeed);
+		gameStarted = true;
+		Debug.Log("Starting game !");
+		GameManager.gm.canMove = true;
+	}
+
+	public IEnumerator StopGame() {
+		GameManager.gm.canMove = false;
+		StartCoroutine(RevealCam.rc.hideLevel());
+		yield return new WaitForSeconds(RevealCam.rc.animationSpeed);
+		gameStarted = false;
+		Debug.Log("Starting game !");
+		GameManager.gm.canMove = true;
 	}
 
 	void Update() {
-
+		if (gameStarted) {
+			timer += Time.deltaTime;
+			hunger -= (Time.deltaTime * reduceSpeed);
+			UIManager.uim.setTimerValue(timer);
+			UIManager.uim.setHungerValue(hunger);
+		}
 	}
 
 	public void pauseGame() {

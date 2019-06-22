@@ -16,13 +16,11 @@ public class RevealCam : MonoBehaviour {
 	}
 
 	public IEnumerator revealLevel() {
-		GameManager.gm.canMove = false;
 		timer = 1f;
 		for(;;) {
 			timer -= (Time.deltaTime / animationSpeed);
 			updateState();
 			if (timer <= 0f) {
-				GameManager.gm.canMove = true;
 				break ;
 			}
 			yield return null;
@@ -30,13 +28,11 @@ public class RevealCam : MonoBehaviour {
 	}
 
 	public IEnumerator hideLevel() {
-		GameManager.gm.canMove = false;
 		timer = 0f;
 		for(;;) {
 			timer += (Time.deltaTime / animationSpeed);
 			updateState();
 			if (timer >= 1f) {
-				GameManager.gm.canMove = true;
 				break ;
 			}
 			yield return null;
