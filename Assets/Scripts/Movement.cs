@@ -7,7 +7,9 @@ public class Movement : MonoBehaviour {
 	public float 			playerSpeed = 1f;
 	public float			maxVelocity = 5f;
 	public ParticleSystem 	particles;
-	private bool			isUnderground = false;
+	
+	[HideInInspector]
+	public bool			isUnderground = false;
 	private bool			canMove = true;
 
 	private Rigidbody 		rb;
@@ -34,6 +36,7 @@ public class Movement : MonoBehaviour {
 		if (corrToggleMode == null && Input.GetButtonDown("Fire3")){
 			if (!hit.transform.gameObject.layer.Equals(LayerMask.NameToLayer("Floor"))){
 				isUnderground = !isUnderground;
+
 				Debug.Log("Switch mode !");
 				rb.velocity = Vector3.zero;
 				corrToggleMode = toggleMode();
@@ -65,6 +68,7 @@ public class Movement : MonoBehaviour {
 		canMove = false;
 		yield return new WaitForSeconds(1f);
 		rend.enabled = !isUnderground;
+		GameManager.gm.isUnder = isUnderground;
 		if (isUnderground){
 			switchLayer("PlayerUnderground");
 			particles.Play();

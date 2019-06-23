@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 	//Global Parameters
 	
 	[HideInInspector]public bool	canMove = true;
+	[HideInInspector]public bool	isUnder = false;
 	[HideInInspector]public bool	gameStarted = false;	
 
 	[HideInInspector]public int 	currentScore = 0;
@@ -75,7 +76,7 @@ public class GameManager : MonoBehaviour {
 	void Update() {
 		if (gameStarted) {
 			timer += Time.deltaTime;
-			hunger -= (Time.deltaTime * reduceSpeed);
+			hunger -= (Time.deltaTime * (reduceSpeed * ((isUnder) ? 2f : 1f)));
 			UIManager.uim.setTimerValue(timer);
 			UIManager.uim.setHungerValue(hunger);
 		}
