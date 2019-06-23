@@ -34,7 +34,7 @@ public class FadeObjects : MonoBehaviour {
 	}
 
 	public void setObjectTransparent(Transform obj) {
-		setObjectAlpha(obj, 0.5f);
+		setObjectAlpha(obj, 0.3f);
 	}
 
 	public void setObjectOpaque(Transform obj) {
